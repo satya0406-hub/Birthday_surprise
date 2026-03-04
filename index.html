@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Girl ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    background:#ffd6e7;
+    overflow:hidden;
+    text-align:center;
+}
+
+/* Common screen style */
+.screen{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    transition:0.8s;
+}
+
+/* Countdown */
+#countdown{
+    font-size:120px;
+    color:#ff1493;
+    font-weight:bold;
+}
+
+/* Cake */
+#cake{
+    font-size:120px;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+#swipeText{
+    font-size:22px;
+    color:#d63384;
+    margin-bottom:20px;
+}
+
+/* Button */
+button{
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:25px;
+    background:#ff4da6;
+    color:white;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+button:hover{
+    background:#e60073;
+}
+
+/* Message */
+#messageBox{
+    width:80%;
+    max-width:500px;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+#photo{
+    width:200px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+.hidden{
+    display:none;
+}
+
+/* Confetti */
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    background:red;
+    top:-10px;
+    animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(100vh) rotate(360deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Countdown Screen -->
+<div id="countScreen" class="screen">
+    <div id="countdown">3</div>
+</div>
+
+<!-- Cake Screen -->
+<div id="cakeScreen" class="screen hidden">
+    <div id="swipeText">Swipe anywhere to cut the cake 🎂</div>
+    <div id="cake">🎂</div>
+</div>
+
+<!-- Message Button Screen -->
+<div id="buttonScreen" class="screen hidden">
+    <h2>Some Sweet Moments 💖</h2>
+    <button onclick="showMessage()">Open My Message</button>
+</div>
+
+<!-- Final Message Screen -->
+<div id="finalScreen" class="screen hidden">
+    <div id="messageBox">
+        <h2>Happy Birthday My Girl ❤️</h2>
+        <p>
+            You deserve all the happiness, love, and success in this world.  
+            You make my life brighter every single day.  
+            I’m so lucky to have you.  
+            Keep smiling always 💕
+        </p>
+        <img id="photo" src="SHRI_KRISHNA.jpeg" alt="Birthday Photo">
+    </div>
+</div>
+
+<script>
+
+// Countdown Logic
+let count = 3;
+let countdownEl = document.getElementById("countdown");
+
+let interval = setInterval(()=>{
+    count--;
+    countdownEl.innerText = count;
+    if(count==0){
+        clearInterval(interval);
+        document.getElementById("countScreen").classList.add("hidden");
+        document.getElementById("cakeScreen").classList.remove("hidden");
+    }
+},1000);
+
+
+// Swipe Detection
+let startX = 0;
+let cakeScreen = document.getElementById("cakeScreen");
+
+cakeScreen.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+});
+
+cakeScreen.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].clientX;
+    if(Math.abs(endX - startX) > 50){
+        cutCake();
+    }
+});
+
+cakeScreen.addEventListener("mousedown", e=>{
+    startX = e.clientX;
+});
+
+cakeScreen.addEventListener("mouseup", e=>{
+    let endX = e.clientX;
+    if(Math.abs(endX - startX) > 50){
+        cutCake();
+    }
+});
+
+function cutCake(){
+    document.getElementById("cake").innerText = "🍰";
+    createConfetti();
+    setTimeout(()=>{
+        document.getElementById("cakeScreen").classList.add("hidden");
+        document.getElementById("buttonScreen").classList.remove("hidden");
+    },1500);
+}
+
+// Confetti
+function createConfetti(){
+    for(let i=0;i<30;i++){
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random()*100+"vw";
+        confetti.style.backgroundColor =
+            "hsl("+Math.random()*360+",100%,50%)";
+        confetti.style.animationDuration = (Math.random()*3+2)+"s";
+        document.body.appendChild(confetti);
+    }
+}
+
+// Show Message
+function showMessage(){
+    document.getElementById("buttonScreen").classList.add("hidden");
+    document.getElementById("finalScreen").classList.remove("hidden");
+}
+
+</script>
+
+</body>
+</html>
